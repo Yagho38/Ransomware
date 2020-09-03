@@ -14,3 +14,5 @@ DESCRIPTOGRAFAR SEUS ARQUIVOS :)
 ------------------------------------------
 NÃO FAÇA MERDA :)
 ------------------------------------------
+ESTE É APENAS UM MALWARE DIDÁTICO, NÃO ME RESPONSABILIZO POR NENHUMA AÇÃO TOMADA UTILIZANDO-O
+------------------------------------------
